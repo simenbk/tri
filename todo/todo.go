@@ -20,3 +20,16 @@ func SaveItems(filename string, items []Item) error {
 	// Placeholder implementation
 	return nil
 }
+
+func ReadItems(filename string) ([]Item, error) {
+	b, err := os.ReadFile(filename)
+	if err != nil {
+		return []Item{}, err
+	}
+	var items []Item
+	err = json.Unmarshal(b, &items)
+	if err != nil {
+		return []Item{}, err
+	}
+	return items, nil
+}
