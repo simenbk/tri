@@ -20,11 +20,14 @@ var addCmd = &cobra.Command{
 }
 
 func addRun(cmd *cobra.Command, args []string) {
-	items := []todo.Item{}
+	var items = []todo.Item{}
 	for _, x := range args {
 		items = append(items, todo.Item{Text: x})
 	}
-	fmt.Printf("%#v", items)
+	err := todo.SaveItems("/home/simen-kristiansen/.tridos.json", items)
+	if err != nil {
+		fmt.Errorf("%v", err)
+	}
 }
 
 func init() {
