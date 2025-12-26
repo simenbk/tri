@@ -7,7 +7,7 @@ import (
 )
 
 type Item struct {
-	Text string
+	Text     string
 	Priority int
 }
 
@@ -45,3 +45,4 @@ func (i *Item) SetPriority(pri int) {
 		i.Priority = 2
 	}
 }
+
