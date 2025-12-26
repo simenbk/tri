@@ -1,5 +1,5 @@
 /*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
+Copyright © 2025 Simen Kristiansen simenbolstad@gmail.com
 */
 package cmd
 
@@ -27,7 +27,7 @@ func addRun(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Printf("%v", err)
 	}
-	
+
 	for _, x := range args {
 		item := todo.Item{Text: x}
 		item.SetPriority(priority)
