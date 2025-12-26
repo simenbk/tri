@@ -5,8 +5,10 @@ package cmd
 
 import (
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -33,13 +35,27 @@ func Execute() {
 	}
 }
 
+// getDataFilePath returns the configured data file path from Viper.
+// It supports defaults, environment variables, and future config file support.
+func getDataFilePath() string {
+	return viper.GetString("datafile")
+}
+
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.tri.yaml)")
-
+	// Initialize Viper configuration
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		// Fallback to current directory if home directory cannot be determined
+		homeDir = "."
+	}
+	
+	defaultDataFile := filepath.Join(homeDir, ".tridos.json")
+	viper.SetDefault("datafile", defaultDataFile)
+	
+	// Bind to environment variable TRI_DATA_FILE
+	viper.SetEnvPrefix("TRI")
+	viper.BindEnv("datafile", "TRI_DATA_FILE")
+	
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")

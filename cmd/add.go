@@ -24,7 +24,7 @@ func addRun(cmd *cobra.Command, args []string) {
 	for _, x := range args {
 		items = append(items, todo.Item{Text: x})
 	}
-	err := todo.SaveItems("/home/simen-kristiansen/.tridos.json", items)
+	err := todo.SaveItems(getDataFilePath(), items)
 	if err != nil {
 		fmt.Errorf("%v", err)
 	}
