@@ -11,6 +11,8 @@ import (
 	"github.com/spf13/viper"
 )
 
+var dataFile string
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "tri",
@@ -36,8 +38,10 @@ func Execute() {
 }
 
 // getDataFilePath returns the configured data file path from Viper.
-// It supports defaults, environment variables, and future config file support.
+// It supports defaults, environment variables, command-line flags, and future config file support.
 func getDataFilePath() string {
+	// If the flag was set, use it (it's already bound to Viper)
+	// Otherwise, Viper will use the default or environment variable value
 	return viper.GetString("datafile")
 }
 
@@ -59,4 +63,9 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	rootCmd.PersistentFlags().StringVar(&dataFile, "datafile", defaultDataFile, "data file to store todos")
+	
+	// Bind the flag to Viper so it can be used by getDataFilePath()
+	viper.BindPFlag("datafile", rootCmd.PersistentFlags().Lookup("datafile"))
 }
