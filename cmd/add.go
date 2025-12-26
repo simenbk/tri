@@ -12,6 +12,8 @@ import (
 	"tri/todo"
 )
 
+var priority int
+
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
@@ -27,7 +29,9 @@ func addRun(cmd *cobra.Command, args []string) {
 	}
 	
 	for _, x := range args {
-		items = append(items, todo.Item{Text: x})
+		item := todo.Item{Text: x}
+		item.SetPriority(priority)
+		items = append(items, item)
 	}
 	err = todo.SaveItems(getDataFilePath(), items)
 	if err != nil {
@@ -37,6 +41,8 @@ func addRun(cmd *cobra.Command, args []string) {
 
 func init() {
 	rootCmd.AddCommand(addCmd)
+
+	addCmd.Flags().IntVarP(&priority, "priority", "p", 2, "Priority of the todo item (1=high, 2=medium, 3=low)")
 
 	// Here you will define your flags and configuration settings.
 
